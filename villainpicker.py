@@ -1,9 +1,7 @@
 import random
 import webbrowser
-
-# Define the players
-players = ["Todd", "Toby", "Paul"]
-image = "https://www.ravensburger.us/content/wcm/mediadata/images/Discover/Theme_Specials/03_Games/2021/Villainous%20Page/05_21_Discover_03Games_DisneyVillainous_WTCGame_Desktop_1045x1045.jpg"
+import os
+import json
 
 # Define the characters and their corresponding image URLs
 characters = {
@@ -26,20 +24,157 @@ characters = {
     "Lady Tremane": "https://static.wikia.nocookie.net/disney-villainous/images/1/15/Lady_Tremaine.png/revision/latest?cb=20210503155614",
     "Horned King": "https://static.wikia.nocookie.net/disney-villainous/images/8/82/Horned_King.png/revision/latest?cb=20210503155609",
     "Syndrome": "https://static.wikia.nocookie.net/disney-villainous/images/b/b3/Syndrome.png/revision/latest?cb=20230116215921",
-    "Lostso": "https://static.wikia.nocookie.net/disney-villainous/images/6/6d/Lotso.png/revision/latest?cb=20230116215710",
+    "Lotso": "https://static.wikia.nocookie.net/disney-villainous/images/6/6d/Lotso.png/revision/latest?cb=20230116215710",
     "Madam Mim": "https://static.wikia.nocookie.net/disney-villainous/images/7/7a/Madam_Mim.png/revision/latest?cb=20230116215808",
     "Oogie Boogie": "https://static.wikia.nocookie.net/disney-villainous/images/b/b3/Syndrome.png/revision/latest?cb=20230116215921",
     "King Candy": "https://static.wikia.nocookie.net/disney-villainous/images/5/57/King_Candy.png/revision/latest?cb=20240610183537",
     "Shere Khan": "https://static.wikia.nocookie.net/disney-villainous/images/8/8e/Shere_Khan.png/revision/latest?cb=20240610183454"
 }
 
-# Randomly assign a character to each player, and do not allow duplicate characters
-for player in players:
-    character, url = random.choice(list(characters.items()))
-    print(f"{player} has been assigned {character}")
-    del characters[character]
-    webbrowser.open(url)
+# Generate the HTML content with JavaScript for dynamic player input and assignment
+html_content = """
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Disney Villainous Character Assignments</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 20px;
+            flex-wrap: wrap;
+        }
+        .character {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 10px;
+            cursor: pointer;
+        }
+        img {
+            max-width: 200px;
+            border-radius: 10px;
+        }
+        h2 {
+            margin: 10px 0;
+        }
+        button {
+            font-size: 20px;
+            padding: 10px 20px;
+            margin: 20px;
+            cursor: pointer;
+        }
+        input {
+            font-size: 20px;
+            padding: 10px;
+            margin: 5px;
+            text-align: center;
+        }
+    </style>
+    <script>
+        let characters = """ + json.dumps(characters) + """;
+        let assignments = {};
+        let players = [];
 
-# randomly pick a player to go first
-first_player = random.choice(players)
-print(f"{first_player} goes first!")
+        function addPlayers() {
+            const playerContainer = document.querySelector('.player-container');
+            playerContainer.innerHTML = '';
+            for (let i = 1; i <= 6; i++) {
+                const playerInput = document.createElement('input');
+                playerInput.type = 'text';
+                playerInput.placeholder = 'Player ' + i;
+                playerInput.id = 'player' + i;
+                playerContainer.appendChild(playerInput);
+            }
+        }
+
+        function chooseVillains() {
+            players = [];
+            for (let i = 1; i <= 6; i++) {
+                const playerName = document.getElementById('player' + i).value.trim();
+                if (playerName) {
+                    players.push(playerName);
+                }
+            }
+            if (players.length === 0) {
+                alert('Please add at least one player.');
+                return;
+            }
+
+            assignments = assignCharactersToPlayers(players, characters);
+            const container = document.querySelector('.container');
+            container.innerHTML = '';
+            for (const [player, [character, image]] of Object.entries(assignments)) {
+                const characterDiv = document.createElement('div');
+                characterDiv.className = 'character';
+                characterDiv.id = player;
+                characterDiv.innerHTML = `
+                    <img src="${image}" alt="${character}" onclick="reassignCharacter('${player}')">
+                    <h2>${player}</h2>
+                `;
+                container.appendChild(characterDiv);
+            }
+
+            // Remove player input fields after choosing villains
+            const playerContainer = document.querySelector('.player-container');
+            playerContainer.innerHTML = '';
+        }
+
+        function reassignCharacter(player) {
+            const characterKeys = Object.keys(characters);
+            const newCharacterKey = characterKeys[Math.floor(Math.random() * characterKeys.length)];
+            const newCharacter = [newCharacterKey, characters[newCharacterKey]];
+            assignments[player] = newCharacter;
+            const playerDiv = document.getElementById(player);
+            playerDiv.innerHTML = `
+                <img src="${newCharacter[1]}" alt="${newCharacter[0]}" onclick="reassignCharacter('${player}')">
+                <h2>${player}</h2>
+            `;
+        }
+
+        function assignCharactersToPlayers(players, characters) {
+            let assignments = {};
+            let characterList = Object.keys(characters);
+            randomShuffle(characterList);
+            for (let player of players) {
+                let character = characterList.pop();
+                let image = characters[character];
+                assignments[player] = [character, image];
+            }
+            return assignments;
+        }
+
+        function randomShuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Disney Villainous Character Assignments</h1>
+    <button onclick="addPlayers()">Add Players</button>
+    <div class="player-container"></div>
+    <button onclick="chooseVillains()">Let's Choose Your Villains</button>
+    <div class="container"></div>
+</body>
+</html>
+"""
+
+# Save the HTML content to a file
+html_file = 'character_assignments.html'
+with open(html_file, 'w') as file:
+    file.write(html_content)
+
+# Open the HTML file in the default web browser
+webbrowser.open('file://' + os.path.realpath(html_file))

@@ -33,10 +33,11 @@ characters = {
     "Shere Khan": image
 }
 
-# Randomly assign a character to each player
+# Randomly assign a character to each player, and do not allow duplicate characters
 for player in players:
     character, url = random.choice(list(characters.items()))
     print(f"{player} has been assigned {character}")
+    del characters[character]
     webbrowser.open(url)
 
 # randomly pick a player to go first

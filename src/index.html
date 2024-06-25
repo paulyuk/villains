@@ -79,6 +79,14 @@
             return assignments;
         }
 
+        function assignFirstPlayer() {
+            randomShuffle(players);
+            let firstPlayer = players[0];
+
+            const firstPlayerDiv = document.querySelector('.firstPlayer');
+            firstPlayerDiv.innerHTML = `<h2>${firstPlayer} goes first!</h2>`;
+        }
+
         function randomShuffle(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -89,9 +97,11 @@
 </head>
 <body>
     <h1>Disney Villainous Character Assignments</h1>
-    <button onclick="addPlayers()">Add Players</button>
+    <button onclick="addPlayers()">Add players</button>
     <div class="player-container"></div>
-    <button onclick="chooseVillains()">Let's Choose Your Villains</button>
+    <button onclick="chooseVillains()">Choose your villains</button>
     <div class="container"></div>
+    <button onclick="assignFirstPlayer()">Roll to see who goes first</button>
+    <div class="firstPlayer"></div>
 </body>
 </html>

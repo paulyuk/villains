@@ -1,55 +1,56 @@
 body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    background-color: #f0f0f0;
-}
-.player-container {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 20px;
-    flex-wrap: wrap;
-}
-.container {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 20px;
-    flex-wrap: wrap;
-}
-.firstPlayer {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 20px;
-    flex-wrap: wrap;
-}
-.character {
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin: 10px;
-    cursor: pointer;
-}
-img {
-    max-width: 200px;
-    border-radius: 10px;
-}
-h2 {
-    margin: 10px 0;
-}
-button {
-    font-size: 20px;
-    padding: 10px 20px;
-    margin: 20px;
-    cursor: pointer;
-}
-input {
-    font-size: 20px;
-    padding: 10px;
-    margin: 5px;
-    text-align: center;
-}
+            background-color: #1E1E1E;
+            color: #F0DB4F; /* gold */
+            font-family: 'Cinzel Decorative', cursive;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .villainous-button {
+            min-width: 200px;
+            height: 50px;
+            background: linear-gradient(145deg, #004d00, #000000);
+            border: 2px solid #F0DB4F;
+            border-radius: 10px;
+            color: #F0DB4F;
+            font-size: 24px;
+            text-align: center;
+            line-height: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin: 10px;
+            padding: 0 20px;
+        }
+
+        .villainous-button:hover {
+            background: linear-gradient(145deg, #002800, #000000);
+            border-color: #FFD700;
+            color: #FFD700;
+        }
+
+        .player-container, .container, .firstPlayer {
+            margin-top: 20px;
+        }
+
+        .character img {
+            width: 150px;
+            height: auto;
+            cursor: pointer;
+        }
+
+        .character {
+            display: inline-block;
+            margin: 20px;
+            text-align: center;
+        }

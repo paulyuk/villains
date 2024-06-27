@@ -11,7 +11,7 @@ This is a fun hobby project written in HTML + Javascript with help from GitHub C
 - Allows reassigning a particular player's character by clicking on their image
 - Alt text for accessibility
 - Tested on desktops and mobile devices
-- Github Action Workflow included for continuous delivery to Azure Static Web apps
+- Github Action Workflow included for continuous delivery to Azure Static Web apps!
 
 ## Try it!
 [Click here](https://zealous-pebble-07e561e10.5.azurestaticapps.net/) to try a version of this deployed to an Azure Static Web app.
